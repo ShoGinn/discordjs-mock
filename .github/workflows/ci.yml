@@ -119,17 +119,48 @@ jobs:
             - CommitLint
             - quality
         steps:
-        # hack - reuse actions/setup-node@v3 just to set a new registry
-        - uses: actions/setup-node@v3
-          with:
-            node-version: "18"
-            registry-url: "https://npm.pkg.github.com"
-        - uses: pnpm/action-setup@v2
-          name: Install pnpm
-          id: pnpm-install
-          with:
-              version: 8
-              run_install: false
-        - run: pnpm publish --no-git-checks .
-          env:
-              NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            # -----------------------------------------------------------------------
+            #                    Check out The Repository
+            # -----------------------------------------------------------------------
+            - name: 💾 Check out repository
+              uses: actions/checkout@v4
+
+            # -----------------------------------------------------------------------
+            #                    Install Node.js and pnpm
+            # -----------------------------------------------------------------------
+            - name: 📦 Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 18
+                  registry-url: "https://npm.pkg.github.com"
+
+            - uses: pnpm/action-setup@v2
+              name: Install pnpm
+              id: pnpm-install
+              with:
+                version: 8
+                run_install: false
+
+            # -----------------------------------------------------------------------
+            #                    Cache dependencies
+            # -----------------------------------------------------------------------
+            - name: Get PNPM Store Directory
+              id: pnpm-cache
+              shell: bash
+              run: |
+                echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+            - name: Setup PNPM Cache
+              uses: actions/cache@v3
+              with:
+                path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+                key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+                restore-keys: |
+                  ${{ runner.os }}-pnpm-store-
+
+            # -----------------------------------------------------------------------
+            #                    Publish to GitHub Package Registry
+            # -----------------------------------------------------------------------
+            - name: Publish to GitHub Package Registry
+              run: pnpm publish --no-git-checks .
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
