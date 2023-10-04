@@ -109,7 +109,7 @@ jobs:
             - uses: google-github-actions/release-please-action@v3
               with:
                   release-type: node
-                  package-name: daruma-games
+                  package-name: discordjs-mock
     GitHubPackage:
         runs-on: ubuntu-latest
         permissions:
@@ -156,6 +156,11 @@ jobs:
                 key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
                 restore-keys: |
                   ${{ runner.os }}-pnpm-store-
+            # -----------------------------------------------------------------------
+            #                    Install dependencies
+            # -----------------------------------------------------------------------
+            - name: Install dependencies
+              run: pnpm i
 
             # -----------------------------------------------------------------------
             #                    Publish to GitHub Package Registry
