@@ -132,8 +132,6 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: 18
-                  registry-url: "https://npm.pkg.github.com"
-
             - uses: pnpm/action-setup@v2
               name: Install pnpm
               id: pnpm-install
@@ -168,4 +166,4 @@ jobs:
             - name: Publish to GitHub Package Registry
               run: pnpm publish --no-git-checks .
               env:
-                  NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -9,7 +9,7 @@
 	"files": ["dist"],
 	"private": false,
 	"publishConfig": {
-		"registry": "https://npm.pkg.github.com"
+		"access": "public"
 	},
 	"exports": {
 		".": {
