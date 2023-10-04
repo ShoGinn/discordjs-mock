@@ -1,0 +1,87 @@
+{
+	"folders": [
+		{
+			"name": "root",
+			"path": "./"
+		},
+		{
+			"name": "source",
+			"path": "./src"
+		}
+	],
+	"settings": {
+		/*
+		LINTING & FORMATTING
+		*/
+		"mdx.experimentalLanguageServer": true,
+		"editor.formatOnSave": true,
+		"eslint.format.enable": false,
+		"eslint.validate": [
+			"javascript",
+			"javascriptreact",
+			"html",
+			"typescriptreact",
+			"typescript"
+		],
+		"editor.codeActionsOnSave": {
+			// TODO: Reenable when eslint performance is better
+			"source.fixAll.eslint": false
+		},
+		"editor.defaultFormatter": "esbenp.prettier-vscode",
+		"prettier.requireConfig": true,
+		"prettier.configPath": ".prettierrc.cjs",
+		"javascript.suggest.autoImports": true,
+		"javascript.updateImportsOnFileMove.enabled": "always",
+		"typescript.tsserver.experimental.enableProjectDiagnostics": true,
+		"typescript.preferences.importModuleSpecifierEnding": "js",
+		"typescript.autoClosingTags": true,
+		"[typescript]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[json]": {
+			"editor.defaultFormatter": "esbenp.prettier-vscode"
+		},
+		"[markdown]": {
+			"editor.defaultFormatter": "unifiedjs.vscode-mdx"
+		},
+		/*
+		  EDITOR STYLE
+		*/
+		// "prettier.prettierPath": "./node_modules/prettier",
+		"editor.wordWrap": "on",
+		"editor.tabSize": 2,
+		"explorer.fileNesting.enabled": true,
+		"explorer.fileNesting.patterns": {
+			"*": "${basename}.*.${extname}",
+			"package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml",
+			".env": "*.env"
+		},
+		"explorer.fileNesting.expand": false,
+		"prettier.ignorePath": ".prettierignore",
+		"editor.bracketPairColorization.enabled": true,
+		"editor.guides.bracketPairs": "active",
+		"editor.quickSuggestions": {
+			"strings": true
+		},
+		"files.exclude": {
+			// "**/node_modules": true,
+			"**/coverage/": true,
+			"**/.next": true,
+			"**/.turbo": true
+			// "**/dist": true,
+		},
+		"search.useParentIgnoreFiles": true,
+		/*
+		  TESTING
+		*/
+		"jest.disabledWorkspaceFolders": ["addons", "tests", "source"],
+		"jest.autoRevealOutput": "off",
+		"jest.autoRun": "off",
+		/*
+		  MISC
+		*/
+		"cSpell.words": [],
+		"cSpell.enableFiletypes": ["mdx"],
+		"typescript.tsdk": "root/node_modules/typescript/lib"
+	}
+}
