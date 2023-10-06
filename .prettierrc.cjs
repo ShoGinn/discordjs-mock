@@ -11,12 +11,6 @@ module.exports = {
 	useTabs: true,
 	overrides: [
 		{
-			files: '.all-contributorsrc',
-			options: {
-				parser: 'json',
-			},
-		},
-		{
 			files: '*.yml',
 			options: {
 				tabWidth: 2,
