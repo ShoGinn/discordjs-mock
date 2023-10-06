@@ -2,169 +2,169 @@
 name: Node.js CI
 
 on:
-    workflow_dispatch:
-    push:
-        paths-ignore:
-            - README.md
-            - .github/**
-            - locales/**
-            - sounds/**
-            - package.json
-            - addons/**
-            - .gitignore
-            - docker-compose.yml
-    pull_request:
+  workflow_dispatch:
+  push:
+    paths-ignore:
+      - README.md
+      - .github/**
+      - locales/**
+      - sounds/**
+      - package.json
+      - addons/**
+      - .gitignore
+      - docker-compose.yml
+  pull_request:
 
 concurrency:
-    group: ${{ github.head_ref || github.run_id }}
-    cancel-in-progress: true
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
-    CommitLint:
-        name: Lint Commit Messages
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
-            - run: rm tsconfig.json
-            - uses: wagoid/commitlint-github-action@v5.4.3
+  CommitLint:
+    name: Lint Commit Messages
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: rm tsconfig.json
+      - uses: wagoid/commitlint-github-action@v5.4.3
 
-    quality:
-        name: Build the Node
-        needs:
-            - CommitLint
-        runs-on: ubuntu-latest
-        steps:
-            # -----------------------------------------------------------------------
-            #                    Check out The Repository
-            # -----------------------------------------------------------------------
-            - name: 💾 Check out repository
-              uses: actions/checkout@v4
+  quality:
+    name: Build the Node
+    needs:
+      - CommitLint
+    runs-on: ubuntu-latest
+    steps:
+      # -----------------------------------------------------------------------
+      #                    Check out The Repository
+      # -----------------------------------------------------------------------
+      - name: 💾 Check out repository
+        uses: actions/checkout@v4
 
-            # -----------------------------------------------------------------------
-            #                    Install Node.js and pnpm
-            # -----------------------------------------------------------------------
-            - name: 📦 Setup Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 18
-            - uses: pnpm/action-setup@v2
-              name: Install pnpm
-              id: pnpm-install
-              with:
-                version: 8
-                run_install: false
+      # -----------------------------------------------------------------------
+      #                    Install Node.js and pnpm
+      # -----------------------------------------------------------------------
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 8
+          run_install: false
 
-            # -----------------------------------------------------------------------
-            #                    Cache dependencies
-            # -----------------------------------------------------------------------
-            - name: Get PNPM Store Directory
-              id: pnpm-cache
-              shell: bash
-              run: |
-                echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-            - name: Setup PNPM Cache
-              uses: actions/cache@v3
-              with:
-                path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-                key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-                restore-keys: |
-                  ${{ runner.os }}-pnpm-store-
+      # -----------------------------------------------------------------------
+      #                    Cache dependencies
+      # -----------------------------------------------------------------------
+      - name: Get PNPM Store Directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - name: Setup PNPM Cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
-            # -----------------------------------------------------------------------
-            #                    Install dependencies
-            # -----------------------------------------------------------------------
-            - name: Install dependencies
-              run: pnpm i
+      # -----------------------------------------------------------------------
+      #                    Install dependencies
+      # -----------------------------------------------------------------------
+      - name: Install dependencies
+        run: pnpm i
 
-            # -----------------------------------------------------------------------
-            #                    Build and lint
-            # -----------------------------------------------------------------------
-            - name: Build
-              run: pnpm build
-            - name: Lint
-              run: pnpm lint
+      # -----------------------------------------------------------------------
+      #                    Build and lint
+      # -----------------------------------------------------------------------
+      - name: Build
+        run: pnpm build
+      - name: Lint
+        run: pnpm lint
 
-            # -----------------------------------------------------------------------
-            #                    Run tests
-            # -----------------------------------------------------------------------
-            - name: Test
-              run: pnpm test
+      # -----------------------------------------------------------------------
+      #                    Run tests
+      # -----------------------------------------------------------------------
+      - name: Test
+        run: pnpm test
 
-            # -----------------------------------------------------------------------
-            #                    Upload coverage
-            # -----------------------------------------------------------------------
-            - name: Upload coverage reports to Codecov
-              uses: codecov/codecov-action@v3
+      # -----------------------------------------------------------------------
+      #                    Upload coverage
+      # -----------------------------------------------------------------------
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
 
-    release:
-        name: Semantic Release
-        runs-on: ubuntu-latest
-        needs:
-            - CommitLint
-            - quality
-        if: github.ref == 'refs/heads/main'
-        steps:
-            - uses: google-github-actions/release-please-action@v3
-              with:
-                  release-type: node
-                  package-name: "@shoginn/discordjs-mock"
-    GitHubPackage:
-        runs-on: ubuntu-latest
-        permissions:
-            contents: read
-            packages: write
-        needs:
-            - CommitLint
-            - quality
-        steps:
-            # -----------------------------------------------------------------------
-            #                    Check out The Repository
-            # -----------------------------------------------------------------------
-            - name: 💾 Check out repository
-              uses: actions/checkout@v4
+  release:
+    name: Semantic Release
+    runs-on: ubuntu-latest
+    needs:
+      - CommitLint
+      - quality
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - uses: google-github-actions/release-please-action@v3
+        with:
+          release-type: node
+          package-name: '@shoginn/discordjs-mock'
+  GitHubPackage:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    needs:
+      - CommitLint
+      - quality
+    steps:
+      # -----------------------------------------------------------------------
+      #                    Check out The Repository
+      # -----------------------------------------------------------------------
+      - name: 💾 Check out repository
+        uses: actions/checkout@v4
 
-            # -----------------------------------------------------------------------
-            #                    Install Node.js and pnpm
-            # -----------------------------------------------------------------------
-            - name: 📦 Setup Node.js
-              uses: actions/setup-node@v3
-              with:
-                  node-version: 18
-                  registry-url: 'https://registry.npmjs.org/'
-            - uses: pnpm/action-setup@v2
-              name: Install pnpm
-              id: pnpm-install
-              with:
-                version: 8
-                run_install: false
+      # -----------------------------------------------------------------------
+      #                    Install Node.js and pnpm
+      # -----------------------------------------------------------------------
+      - name: 📦 Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: 'https://registry.npmjs.org/'
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        id: pnpm-install
+        with:
+          version: 8
+          run_install: false
 
-            # -----------------------------------------------------------------------
-            #                    Cache dependencies
-            # -----------------------------------------------------------------------
-            - name: Get PNPM Store Directory
-              id: pnpm-cache
-              shell: bash
-              run: |
-                echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
-            - name: Setup PNPM Cache
-              uses: actions/cache@v3
-              with:
-                path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
-                key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
-                restore-keys: |
-                  ${{ runner.os }}-pnpm-store-
-            # -----------------------------------------------------------------------
-            #                    Install dependencies
-            # -----------------------------------------------------------------------
-            - name: Install dependencies
-              run: pnpm i
+      # -----------------------------------------------------------------------
+      #                    Cache dependencies
+      # -----------------------------------------------------------------------
+      - name: Get PNPM Store Directory
+        id: pnpm-cache
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path)" >> $GITHUB_OUTPUT
+      - name: Setup PNPM Cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.pnpm-cache.outputs.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      # -----------------------------------------------------------------------
+      #                    Install dependencies
+      # -----------------------------------------------------------------------
+      - name: Install dependencies
+        run: pnpm i
 
-            # -----------------------------------------------------------------------
-            #                    Publish to GitHub Package Registry
-            # -----------------------------------------------------------------------
-            - name: Publish to GitHub Package Registry
-              run: pnpm publish --no-git-checks .
-              env:
-                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      # -----------------------------------------------------------------------
+      #                    Publish to GitHub Package Registry
+      # -----------------------------------------------------------------------
+      - name: Publish to GitHub Package Registry
+        run: pnpm publish --no-git-checks .
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
