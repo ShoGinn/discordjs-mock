@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/ShoGinn/discordjs-mock/compare/v1.0.1...v1.0.2) (2023-12-12)
+
+
+### Bug Fixes
+
+* correct missing entitlements ([26f277a](https://github.com/ShoGinn/discordjs-mock/commit/26f277a40da134f96cb99659011cc929640189cb))
+
 ## [1.0.1](https://github.com/ShoGinn/discordjs-mock/compare/v1.0.0...v1.0.1) (2023-10-20)
 
 
