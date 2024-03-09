@@ -53,9 +53,9 @@ function setupMockedInteractionAPIData<Type extends InteractionType>({
   let memberPermissions = null;
   if (guild) {
     appPermissions = guild.members.cache
-      .get(channel.client.user.id)!
+      .get(channel.client.user.id)
       .permissions.bitfield.toString();
-    memberPermissions = guild.members.cache.get(caller.id)!.permissions.bitfield.toString();
+    memberPermissions = guild.members.cache.get(caller.id).permissions.bitfield.toString();
   }
   return {
     application_id: applicationId ?? randomSnowflake().toString(),
@@ -81,10 +81,10 @@ function setupMockedInteractionAPIData<Type extends InteractionType>({
       ? {
           deaf: false,
           flags: GuildMemberFlags.CompletedOnboarding,
-          joined_at: guild.members.cache.get(caller.id)!.joinedAt.toISOString(),
+          joined_at: guild.members.cache.get(caller.id).joinedAt.toISOString(),
           mute: false,
           permissions: memberPermissions ?? PermissionsBitField.Default.toString(),
-          roles: guild.members.cache.get(caller.id)!.roles.cache.map((r) => r.id),
+          roles: guild.members.cache.get(caller.id).roles.cache.map((r) => r.id),
           user: {
             id: caller.id,
             avatar: caller.avatar,
