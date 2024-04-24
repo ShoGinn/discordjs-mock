@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.3](https://github.com/ShoGinn/discordjs-mock/compare/v1.0.2...v1.0.3) (2024-04-24)
+
+
+### Bug Fixes
+
+* **deps:** updated snowflake ([d9e9484](https://github.com/ShoGinn/discordjs-mock/commit/d9e94840f70f8e6a2a4d9eec893b800ff1fec60d))
+
 ## [1.0.2](https://github.com/ShoGinn/discordjs-mock/compare/v1.0.1...v1.0.2) (2023-12-12)
 
 
