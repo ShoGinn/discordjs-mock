@@ -22,7 +22,7 @@ describe('Guild Mock', () => {
     expect(client.users.cache.get(guild.ownerId)).toBeDefined();
     expect(guild.members.cache.get(guild.ownerId)).toBeDefined();
   });
-  it('should create a user and then a guild ', async () => {
+  it('should create a user and then a guild', async () => {
     const client = await setupBot();
     const randomUser = mockUser(client);
     const guild = mockGuild(client);

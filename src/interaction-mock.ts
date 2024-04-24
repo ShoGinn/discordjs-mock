@@ -6,7 +6,6 @@ import {
   type APIMessageStringSelectInteractionData,
   ApplicationCommandType,
   ButtonInteraction,
-  CacheType,
   type Channel,
   ChatInputCommandInteraction,
   Client,
@@ -108,7 +107,7 @@ function applyInteractionResponseHandlers(interaction: Interaction): void {
   const { client } = interaction;
   if ('update' in interaction) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     interaction.update = async (
       options:
         | (InteractionUpdateOptions & { fetchReply: true })
@@ -129,7 +128,7 @@ function applyInteractionResponseHandlers(interaction: Interaction): void {
   }
   if ('deferUpdate' in interaction) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     interaction.deferUpdate = (options) => {
       interaction.deferred = true;
       if (options?.fetchReply) {
@@ -146,7 +145,7 @@ function applyInteractionResponseHandlers(interaction: Interaction): void {
 
   if ('deferReply' in interaction) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     interaction.deferReply = (options) => {
       interaction.deferred = true;
       const message = mockMessage({
@@ -171,7 +170,7 @@ function applyInteractionResponseHandlers(interaction: Interaction): void {
 
   if ('reply' in interaction) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     interaction.reply = (options) => {
       const message = mockMessage({
         client,
@@ -199,7 +198,7 @@ function applyInteractionResponseHandlers(interaction: Interaction): void {
   }
   if ('followUp' in interaction) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
+    // @ts-expect-error
     interaction.followUp = (options) => {
       const message = mockMessage({
         client,
@@ -347,7 +346,6 @@ export function mockButtonInteraction({
   return interaction;
 }
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type
 export function mockStringSelectInteraction({
   override = {},
   caller,
@@ -360,7 +358,7 @@ export function mockStringSelectInteraction({
     values: string[] | string;
   };
   override?: Partial<Omit<APIMessageComponentInteraction, 'data'>>;
-}): StringSelectMenuInteraction<CacheType> {
+}): StringSelectMenuInteraction {
   const { client, channel } = message;
   const rawData = {
     message: messageToAPIData(message),

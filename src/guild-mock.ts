@@ -71,7 +71,7 @@ export function mockGuild(client: Client, owner?: User, data: Partial<APIGuild> 
   // replace guild members fetched with accessing from the cache of the fetched user id in the fetch argument
   // TODO: Remove tsignore
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+  // @ts-expect-error
   guild.members.fetch = async (
     id?:
       | string

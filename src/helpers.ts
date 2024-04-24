@@ -35,7 +35,7 @@ export function copyClass<T extends { client: Client }>(
   overrides: object = {},
 ): T {
   const created = Object.assign(
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+     
     Object.create(Object.getPrototypeOf(object)),
     object,
   ) as T;
@@ -43,13 +43,13 @@ export function copyClass<T extends { client: Client }>(
   return created;
 }
 
-export type PermissionVariantsTest = {
+export interface PermissionVariantsTest {
   permissionsThatShouldWork: PermissionResolvable[];
   operation: (
     permission: PermissionResolvable,
     isPermissionAllowed: boolean,
   ) => Promise<void> | void;
-};
+}
 
 export async function testAllPermissions({
   permissionsThatShouldWork,
