@@ -1,4 +1,3 @@
- 
 import { ChannelType, Client } from 'discord.js';
 
 import {
@@ -38,7 +37,7 @@ describe('Forum Channel Mock', () => {
     expect(forumChannel.type).toBe(ChannelType.GuildForum);
     expect(forumChannel.availableTags).toBeDefined();
     expect(forumChannel.availableTags.length).toBe(1);
-    expect(forumChannel.availableTags[0].name).toBe('test tag');
+    expect(forumChannel.availableTags[0]?.name).toBe('test tag');
   });
   test.todo('fetch archived threads');
   test.todo('fetch active threads');
@@ -80,7 +79,7 @@ describe('Message Mock', () => {
     const message = mockMessage({ client, channel: textChannel });
     expect(message).toBeDefined();
     expect(message.guild).toBeDefined();
-    expect(message.guild.members.cache.get(message.author.id)).toBeDefined();
+    expect(message.guild?.members.cache.get(message.author.id)).toBeDefined();
   });
   it('should start a thread from a message', async () => {
     const textChannel = mockTextChannel(client);
@@ -90,13 +89,13 @@ describe('Message Mock', () => {
     expect(thread.parentId).toBe(message.channel.id);
     expect(thread.parent).toBeDefined();
     expect(thread.name).toBe('test thread');
-    expect(thread.parent.id).toBe(message.channel.id);
+    expect(thread.parent?.id).toBe(message.channel.id);
     expect(message.thread).toBeDefined();
-    expect(message.thread.id).toBe(thread.id);
+    expect(message.thread?.id).toBe(thread.id);
     const fromCache = textChannel.threads.cache.get(thread.id);
     expect(fromCache).toBeDefined();
-    expect(fromCache.id).toBe(thread.id);
-    expect(fromCache.name).toBe(thread.name);
+    expect(fromCache?.id).toBe(thread.id);
+    expect(fromCache?.name).toBe(thread.name);
   });
 });
 
@@ -118,7 +117,7 @@ describe('Thread Mock', () => {
       parentChannel: textChannel,
     });
     expect(threadChannel.parent).not.toBeNull();
-    expect(threadChannel.parent.id).toBe(textChannel.id);
+    expect(threadChannel.parent?.id).toBe(textChannel.id);
   });
   it('should create a thread with a parent message', () => {
     const textChannel = mockTextChannel(client);
@@ -129,6 +128,6 @@ describe('Thread Mock', () => {
     });
     expect(threadChannel.parent).not.toBeNull();
     expect(threadChannel.id).toBe(threadParent.id);
-    expect(threadParent.thread.id).toBe(threadChannel.id);
+    expect(threadParent.thread?.id).toBe(threadChannel.id);
   });
 });

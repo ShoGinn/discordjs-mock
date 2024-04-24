@@ -45,10 +45,11 @@ export function channelToAPIChannel(channel: Channel): APIChannel {
     const data: APIDMChannel = {
       id: channel.id,
       type: channel.type,
-      flags: channel.flags?.bitfield,
+      flags: channel.flags.bitfield,
       last_message_id: channel.lastMessageId,
       name: null,
-      recipients: [channel.client.user, channel.recipient].map((user) => userToAPIUser(user)), // TODO: Is the bot a recipient?
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      recipients: [channel.client.user, channel.recipient!].map((user) => userToAPIUser(user)), // TODO: Is the bot a recipient?
     };
     return data;
   }
@@ -58,8 +59,8 @@ export function channelToAPIChannel(channel: Channel): APIChannel {
       id: channel.id,
       position: 0,
       type: channel.type,
-      flags: channel.flags?.bitfield,
-      guild_id: channel.guild?.id,
+      flags: channel.flags.bitfield,
+      guild_id: channel.guild.id,
       last_message_id: channel.lastMessageId,
       member_count: channel.memberCount ?? 0,
       message_count: channel.messageCount ?? 0,
@@ -90,8 +91,8 @@ export function channelToAPIChannel(channel: Channel): APIChannel {
       position: channel.position,
       type: channel.type,
       default_auto_archive_duration: channel.defaultAutoArchiveDuration,
-      flags: channel.flags?.bitfield,
-      guild_id: channel.guild?.id,
+      flags: channel.flags.bitfield,
+      guild_id: channel.guild.id,
       last_message_id: channel.lastMessageId,
       last_pin_timestamp: channel.lastPinAt?.toISOString(),
       name: channel.name,
@@ -127,7 +128,7 @@ export function messageToAPIData(message: Message): APIMessage {
     content: message.content,
     edited_timestamp: message.editedAt?.toISOString() ?? null,
     embeds: [],
-    flags: message.flags?.bitfield,
+    flags: message.flags.bitfield,
     mention_everyone: message.mentions.everyone,
     mention_roles: message.mentions.roles.map((role) => role.id),
     mentions: message.mentions.users.map((user) => userToAPIUser(user)),

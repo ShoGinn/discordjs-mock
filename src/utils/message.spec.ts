@@ -26,8 +26,8 @@ describe('sortMessagesById', () => {
 
     const result = sortMessagesById(messages);
 
-    expect(result[0].content).toBe('Message 1');
-    expect(result[1].content).toBe('Message 2');
-    expect(result[2].content).toBe('Message 3');
+    expect(result[0]?.content).toBe('Message 1');
+    expect(result[1]?.content).toBe('Message 2');
+    expect(result[2]?.content).toBe('Message 3');
   });
 });

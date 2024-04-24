@@ -50,11 +50,11 @@ function setupMockedInteractionAPIData<Type extends InteractionType>({
   const guild = channel.isDMBased() ? undefined : channel.guild;
   let appPermissions = null;
   let memberPermissions = null;
-  if (guild) {
+  if (guild?.members.cache) {
     appPermissions = guild.members.cache
       .get(channel.client.user.id)
-      .permissions.bitfield.toString();
-    memberPermissions = guild.members.cache.get(caller.id).permissions.bitfield.toString();
+      ?.permissions.bitfield.toString();
+    memberPermissions = guild.members.cache.get(caller.id)?.permissions.bitfield.toString();
   }
   return {
     application_id: applicationId ?? randomSnowflake().toString(),
@@ -80,10 +80,11 @@ function setupMockedInteractionAPIData<Type extends InteractionType>({
       ? {
           deaf: false,
           flags: GuildMemberFlags.CompletedOnboarding,
-          joined_at: guild.members.cache.get(caller.id).joinedAt.toISOString(),
+          joined_at:
+            guild.members.cache.get(caller.id)?.joinedAt?.toISOString() ?? new Date().toISOString(),
           mute: false,
           permissions: memberPermissions ?? PermissionsBitField.Default.toString(),
-          roles: guild.members.cache.get(caller.id).roles.cache.map((r) => r.id),
+          roles: guild.members.cache.get(caller.id)?.roles.cache.map((r) => r.id) ?? [],
           user: {
             id: caller.id,
             avatar: caller.avatar,
@@ -252,7 +253,7 @@ function applyInteractionResponseHandlers(interaction: Interaction): void {
         if (!interaction.message) {
           throw new Error('No message to edit');
         }
-        return await interaction.message?.edit(options);
+        return await interaction.message.edit(options);
       }
     };
   }

@@ -52,7 +52,7 @@ export function getGuildTextChannelMockDataBase<Type extends GuildTextChannelTyp
     position: 0,
     default_auto_archive_duration: 60,
     rate_limit_per_user: 0,
-    guild_id: guild?.id,
+    guild_id: guild.id,
     last_message_id: null,
     last_pin_timestamp: null,
     name: 'channel name',
@@ -80,7 +80,7 @@ function setupMockedChannel<T extends GuildBasedChannel>(
   ) {
     channel.threads.fetchActive = () => {
       const activeThreads = [...channel.threads.cache.values()].filter(
-        (thread) => !thread.archived || thread.archived == null,
+        (thread) => !thread.archived,
       );
       const output: FetchedThreads = {
         threads: new Collection(
@@ -161,7 +161,7 @@ function setupMockedChannel<T extends GuildBasedChannel>(
       const message = mockMessage({
         client,
         channel,
-        author: client.user,
+        author: client.user ?? undefined,
         opts: options_,
       }) as Message<true>;
       return Promise.resolve(message);
@@ -277,13 +277,12 @@ export function mockThreadFromParentMessage(input: {
   client: Client;
   parentMessage: Message;
   data?: Partial<APIThreadChannel>;
-}): PublicThreadChannel<boolean> {
+}): PublicThreadChannel {
   const { client, parentMessage, data = {} } = input;
 
   if (
-    parentMessage &&
-    (parentMessage.channel.type === ChannelType.GuildText ||
-      parentMessage.channel.type === ChannelType.GuildAnnouncement)
+    parentMessage.channel.type === ChannelType.GuildText ||
+    parentMessage.channel.type === ChannelType.GuildAnnouncement
   ) {
     return mockPublicThread({
       client,
@@ -301,7 +300,7 @@ export function mockPublicThread(input: {
   client: Client;
   parentChannel?: TextChannel | ForumChannel | NewsChannel;
   data?: Partial<APIThreadChannel>;
-}): PublicThreadChannel<boolean> {
+}): PublicThreadChannel {
   const { client, data = {} } = input;
   let { parentChannel } = input;
 
@@ -338,7 +337,7 @@ export function mockPublicThread(input: {
     ]) as PublicThreadChannel;
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment -- ignore because this is a mock
-    // @ts-ignore
+    // @ts-expect-error
     parentChannel.threads.cache.set(thread.id, thread);
     return thread;
   });
@@ -384,10 +383,7 @@ export function mockNewsChannel(input: {
   });
 }
 
-export function mockMessages(
-  channel: TextBasedChannel,
-  numberOfMessages: number,
-): Message<boolean>[] {
+export function mockMessages(channel: TextBasedChannel, numberOfMessages: number): Message[] {
   const messages: Message[] = [];
   for (let id = 1; id <= numberOfMessages; id++) {
     messages.push(
@@ -419,7 +415,7 @@ export function mockMessageReaction({
     user_id: reacter.id,
     message_id: message.id,
     guild_id: message.guild?.id,
-    me: reacter.id === message.client.user?.id,
+    me: reacter.id === message.client.user.id,
     ...override,
   };
   return Reflect.construct(MessageReaction, [message.client, data, message]) as MessageReaction;
@@ -444,7 +440,7 @@ export function mockReaction({
       id: randomSnowflake().toString(),
       name: '👍',
     },
-    me: user.id === message.client.user?.id,
+    me: user.id === message.client.user.id,
     ...override,
   };
   const reaction = Reflect.construct(MessageReaction, [

@@ -50,7 +50,7 @@ export type MessageOptions =
   | MessagePayload
   | InteractionReplyOptions
   | MessageCreateOptions;
-export function applyMessagePayload(payload: MessageOptions, message: Message): Message<boolean> {
+export function applyMessagePayload(payload: MessageOptions, message: Message): Message {
   if (typeof payload === 'string') {
     message.content = payload;
   }
@@ -70,10 +70,10 @@ export function applyMessagePayload(payload: MessageOptions, message: Message): 
 export function mockMessage(input: {
   client: Client;
   author?: User;
-  channel?: TextBasedChannel | undefined;
+  channel?: TextBasedChannel;
   override?: Partial<RawMessageData>;
   opts?: MessageOptions;
-}): Message<boolean> {
+}): Message {
   const { client, opts, override = {} } = input;
   let { author, channel } = input;
   if (!channel) {
@@ -127,7 +127,8 @@ export function mockMessage(input: {
     return await Promise.resolve(
       mockReaction({
         message,
-        user: client.user,
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        user: client.user!,
         override: {
           emoji: {
             id: isCustomEmoji ? emoji : null,
@@ -151,7 +152,7 @@ export function mockMessage(input: {
   };
 
   message.delete = () => {
-    channel?.messages.cache.delete(message.id);
+    channel.messages.cache.delete(message.id);
     return Promise.resolve(message);
   };
 
