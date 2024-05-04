@@ -34,11 +34,7 @@ export function copyClass<T extends { client: Client }>(
   client: Client,
   overrides: object = {},
 ): T {
-  const created = Object.assign(
-     
-    Object.create(Object.getPrototypeOf(object)),
-    object,
-  ) as T;
+  const created = Object.assign(Object.create(Object.getPrototypeOf(object)), object) as T;
   overrideVariables(created, { client, ...overrides });
   return created;
 }
