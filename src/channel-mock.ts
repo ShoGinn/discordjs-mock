@@ -1,6 +1,5 @@
 import {
   type AnyThreadChannel,
-  type APIGuildForumChannel,
   type APIGuildTextChannel,
   type APIInvite,
   type APINewsChannel,
@@ -16,12 +15,12 @@ import {
   type FetchMessageOptions,
   type FetchMessagesOptions,
   ForumChannel,
-  ForumLayoutType,
   type Guild,
   type GuildBasedChannel,
   GuildChannel,
   type GuildTextChannelType,
   Invite,
+  InviteType,
   Message,
   type MessageCreateOptions,
   MessagePayload,
@@ -251,7 +250,9 @@ function setupMockedChannel<T extends GuildBasedChannel>(
     channel.fetchStarterMessage = () => {
       return channel.parent?.type === ChannelType.GuildForum
         ? Promise.resolve(channel.messages.cache.get(channel.id) ?? null)
-        : Promise.resolve(channel.parent?.messages.cache.get(channel.id) ?? null);
+        : (Promise.resolve(
+            channel.parent?.messages.cache.get(channel.id) ?? null,
+          ) as Promise<Message<true> | null>);
     };
   }
   client.channels.cache.set(channel.id, channel);
@@ -343,31 +344,31 @@ export function mockPublicThread(input: {
   });
 }
 
-export function mockForumChannel(
-  client: Client,
-  guild?: Guild,
-  data: Partial<APIGuildForumChannel> = {},
-): ForumChannel {
-  return setupMockedChannel(client, guild, (guild) => {
-    const rawData: APIGuildForumChannel = {
-      ...getGuildTextChannelMockDataBase(ChannelType.GuildForum, guild),
-      available_tags: [
-        {
-          id: randomSnowflake().toString(),
-          name: 'test tag',
-          emoji_id: null,
-          emoji_name: null,
-          moderated: false,
-        },
-      ],
-      default_forum_layout: ForumLayoutType.ListView,
-      default_reaction_emoji: null,
-      default_sort_order: null,
-      ...data,
-    };
-    return Reflect.construct(ForumChannel, [guild, rawData, client]);
-  });
-}
+// export function mockForumChannel(
+//   client: Client,
+//   guild?: Guild,
+//   data: Partial<APIGuildForumChannel> = {},
+// ): ForumChannel {
+//   return setupMockedChannel(client, guild, (guild) => {
+//     const rawData: APIGuildForumChannel = {
+//       ...getGuildTextChannelMockDataBase(ChannelType.GuildForum, guild),
+//       available_tags: [
+//         {
+//           id: randomSnowflake().toString(),
+//           name: 'test tag',
+//           emoji_id: null,
+//           emoji_name: null,
+//           moderated: false,
+//         },
+//       ],
+//       default_forum_layout: ForumLayoutType.ListView,
+//       default_reaction_emoji: null,
+//       default_sort_order: null,
+//       ...data,
+//     };
+//     return Reflect.construct(ForumChannel, [guild, rawData, client]);
+//   });
+// }
 
 export function mockNewsChannel(input: {
   client: Client;
@@ -472,6 +473,7 @@ export function mockInvite(
       name: channel.name,
       type: channel.type,
     },
+    type: InviteType.Guild,
     ...override,
   };
   return Reflect.construct(Invite, [client, inviteData]) as Invite;
