@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.4](https://github.com/ShoGinn/discordjs-mock/compare/v1.0.3...v1.0.4) (2024-05-04)
+
+
+### Bug Fixes
+
+* remove Forum Channel ([0a74ca3](https://github.com/ShoGinn/discordjs-mock/commit/0a74ca3a90cd80190f1f1e3ec852f868c8979352))
+
 ## [1.0.3](https://github.com/ShoGinn/discordjs-mock/compare/v1.0.2...v1.0.3) (2024-04-24)
 
 
