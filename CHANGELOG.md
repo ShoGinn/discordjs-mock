@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.5](https://github.com/ShoGinn/discordjs-mock/compare/v1.0.4...v1.0.5) (2024-05-06)
+
+
+### Bug Fixes
+
+* update discord.js to 14.5.2 ([a49470f](https://github.com/ShoGinn/discordjs-mock/commit/a49470f7791339ee04dee928fa8367b418030f72))
+
 ## [1.0.4](https://github.com/ShoGinn/discordjs-mock/compare/v1.0.3...v1.0.4) (2024-05-04)
 
 
