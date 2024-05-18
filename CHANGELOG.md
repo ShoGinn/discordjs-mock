@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.6](https://github.com/ShoGinn/discordjs-mock/compare/v1.0.5...v1.0.6) (2024-05-18)
+
+
+### Bug Fixes
+
+* **deps:** update deps ([87ee320](https://github.com/ShoGinn/discordjs-mock/commit/87ee320284d1ec176b75a353a1788b8863a4f6c5))
+
 ## [1.0.5](https://github.com/ShoGinn/discordjs-mock/compare/v1.0.4...v1.0.5) (2024-05-06)
 
 
