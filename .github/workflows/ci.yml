@@ -97,6 +97,9 @@ jobs:
       # -----------------------------------------------------------------------
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
 
   release:
     name: Semantic Release
@@ -106,6 +109,6 @@ jobs:
       - quality
     if: github.ref == 'refs/heads/main'
     steps:
-      - uses: google-github-actions/release-please-action@v4
+      - uses: googleapis/release-please-action@v4
         with:
           release-type: node
