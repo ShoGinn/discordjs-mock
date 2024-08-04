@@ -95,6 +95,7 @@ export default config(
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/require-await': 'warn',
       '@typescript-eslint/return-await': ['error', 'always'],
+      '@typescript-eslint/no-unnecessary-type-parameters': 'off',
       '@typescript-eslint/restrict-template-expressions': [
         'error',
         {
