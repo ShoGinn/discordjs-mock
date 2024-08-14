@@ -100,7 +100,6 @@ jobs:
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 
-
   release:
     name: Semantic Release
     runs-on: ubuntu-latest
@@ -111,5 +110,5 @@ jobs:
     steps:
       - uses: googleapis/release-please-action@v4
         with:
-          token: ${{ secrets.DJS_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
