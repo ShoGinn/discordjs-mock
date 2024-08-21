@@ -28,7 +28,7 @@ jobs:
         with:
           fetch-depth: 0
       - run: rm tsconfig.json
-      - uses: wagoid/commitlint-github-action@v6.1.0
+      - uses: wagoid/commitlint-github-action@v6.1.1
 
   quality:
     name: Build the Node
