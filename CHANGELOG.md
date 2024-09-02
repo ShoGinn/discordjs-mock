@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.8](https://github.com/ShoGinn/discordjs-mock/compare/v1.0.7...v1.0.8) (2024-09-02)
+
+
+### Bug Fixes
+
+* **deps:** update discordjs to 14.16 ([bbb1164](https://github.com/ShoGinn/discordjs-mock/commit/bbb11647cb0d11a65b2f36f29eb7fee7c225c3e8))
+* **deps:** update to discordjs 14.16.1 ([ab71997](https://github.com/ShoGinn/discordjs-mock/commit/ab7199792feab0423374a5d5e30e4f3a2f2d78e7))
+
 ## [1.0.7](https://github.com/ShoGinn/discordjs-mock/compare/v1.0.6...v1.0.7) (2024-06-04)
 
 
