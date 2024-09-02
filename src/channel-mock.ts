@@ -28,6 +28,7 @@ import {
   type MessageResolvable,
   NewsChannel,
   type PublicThreadChannel,
+  ReactionType,
   SnowflakeUtil,
   type TextBasedChannel,
   TextChannel,
@@ -407,6 +408,9 @@ export function mockMessageReaction({
   override: Partial<RawMessageReactionData>;
 }): MessageReaction {
   const data: RawMessageReactionData = {
+    type: ReactionType.Normal,
+    burst: false,
+    burst_colors: [],
     channel_id: message.channel.id,
     count: 1,
     emoji: {
@@ -432,6 +436,9 @@ export function mockReaction({
   override?: Partial<RawMessageReactionData>;
 }): MessageReaction {
   const data: RawMessageReactionData = {
+    type: ReactionType.Normal,
+    burst: false,
+    burst_colors: [],
     channel_id: message.channel.id,
     message_id: message.id,
     user_id: user.id,

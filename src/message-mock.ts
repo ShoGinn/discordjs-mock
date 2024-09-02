@@ -114,7 +114,7 @@ export function mockMessage(input: {
     reactions: [],
     ...override,
   };
-  const message = Reflect.construct(Message, [client, rawData]) as Message;
+  const message = Reflect.construct(Message, [client, rawData]);
   (channel.messages.cache as Collection<Snowflake, Message>).set(message.id, message);
   message.react = async (emoji: EmojiIdentifierResolvable) => {
     const isCustomEmoji = typeof emoji === 'string' && emoji.startsWith('<:');
@@ -147,7 +147,7 @@ export function mockMessage(input: {
       }),
     );
 
-  message.edit = (payload) => {
+  message.edit = (payload: MessageOptions) => {
     return Promise.resolve(applyMessagePayload(payload, message));
   };
 

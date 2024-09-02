@@ -14,6 +14,7 @@ import {
   GuildMemberFlags,
   type GuildTextBasedChannel,
   type Interaction,
+  InteractionContextType,
   InteractionResponse,
   InteractionType,
   type InteractionUpdateOptions,
@@ -100,6 +101,8 @@ function setupMockedInteractionAPIData<Type extends InteractionType>({
     message: message ? messageToAPIData(message) : undefined,
     type,
     entitlements: [], // Add the missing 'entitlements' property
+    authorizing_integration_owners: {}, // Initialize with an empty object
+    context: {} as InteractionContextType, // or some other default value
     ...override,
   };
 }

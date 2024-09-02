@@ -1,6 +1,5 @@
 import core from '@eslint/js';
 import prettierConfig from 'eslint-config-prettier';
-import deprecationPlugin from 'eslint-plugin-deprecation';
 // @ts-expect-error [ts7016] -- I don't know why typing is broken here...
 import importPlugin from 'eslint-plugin-import';
 // @ts-expect-error [ts7016] -- I don't know why typing is broken here...
@@ -33,7 +32,6 @@ export default config(
     },
     plugins: {
       import: importPlugin,
-      deprecation: deprecationPlugin,
     },
     rules: {
       '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
@@ -138,7 +136,7 @@ export default config(
       'unicorn/filename-case': ['error'],
       'unicorn/no-null': 'off',
       'no-console': 'warn',
-      'deprecation/deprecation': 'warn',
+
     },
   },
   {
