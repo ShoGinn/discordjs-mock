@@ -52,7 +52,7 @@ export async function testAllPermissions({
   operation,
 }: PermissionVariantsTest): Promise<void> {
   // Possibly swap to Promise.All - going in parallel break things sometimes
-  for await (const permission of Object.keys(PermissionFlagsBits)) {
+  for (const permission of Object.keys(PermissionFlagsBits)) {
     const permissionIsAllowed = permissionsThatShouldWork.includes(
       permission as PermissionResolvable,
     );
